@@ -1,8 +1,7 @@
 name: flutter_colorful_tab
-description: A new Flutter package.
+description: A colorful TabBar for Flutter.
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/datdescartes/flutter_colorful_tab
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
