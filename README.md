@@ -2,6 +2,8 @@
 
 A colorful TabBar for Flutter.
 
+![demo](https://raw.githubusercontent.com/datdescartes/flutter_colorful_tab/master/demo.gif)
+
 ## Getting Started
 
 Add package from github by adding the following to your pubspec.yaml, pub publication is added later.

@@ -38,17 +38,15 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Widget _pageView(int index) {
-    return Center(
-        child: Card(
-      child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Center(
-          child: Text('Page ${index + 1}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+    return ListView.builder(
+      itemCount: 30,
+      itemBuilder: (context, i) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(child: Text('Tab ${index + 1} - item no $i')),
         ),
       ),
-    ));
+    );
   }
 
   TabItem _buildTabItem(IconData icon, String text, Color color) => TabItem(
