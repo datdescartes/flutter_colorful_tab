@@ -49,45 +49,6 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  TabItem _buildTabItem(IconData icon, String text, Color color) => TabItem(
-        title: Row(
-          children: [
-            Icon(icon),
-            SizedBox(width: 8),
-            Text(text),
-          ],
-        ),
-        color: color,
-      );
-
-  Widget _buildTabBar() {
-    return ColorfulTabBar(
-      tabs: [
-        _buildTabItem(Icons.home_outlined, 'Home', Colors.red.shade600),
-        _buildTabItem(
-            Icons.favorite_outline, 'Favorite', Colors.orange.shade600),
-        _buildTabItem(
-            Icons.dashboard_outlined, 'Dashboard', Colors.green.shade600),
-        _buildTabItem(Icons.search_outlined, 'Search', Colors.lime.shade600),
-        _buildTabItem(
-            Icons.settings_outlined, 'Settings', Colors.purple.shade600),
-      ],
-      controller: _tabController,
-    );
-  }
-
-  Widget _buildTabBar2() {
-    return ColorfulTabBar(
-      tabs: [
-        TabItem(color: Colors.red.shade600, title: Text('Home')),
-        TabItem(color: Colors.green.shade600, title: Text('Favorite')),
-        TabItem(color: Colors.orange.shade600, title: Text('Search')),
-        TabItem(color: Colors.green.shade600, title: Text('Settings')),
-      ],
-      controller: _tabController,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +59,61 @@ class _MyHomePageState extends State<MyHomePage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildTabBar(),
+            ColorfulTabBar(
+              tabs: [
+                TabItem(
+                    title: Row(children: [
+                      Icon(Icons.home_outlined),
+                      SizedBox(width: 8),
+                      Text('Home')
+                    ]),
+                    color: Colors.red.shade600),
+                TabItem(
+                    title: Row(children: [
+                      Icon(Icons.favorite_outline),
+                      SizedBox(width: 8),
+                      Text('Favorite')
+                    ]),
+                    color: Colors.orange.shade600),
+                TabItem(
+                    title: Row(children: [
+                      Icon(Icons.search_outlined),
+                      SizedBox(width: 8),
+                      Text('Search')
+                    ]),
+                    color: Colors.lime.shade600),
+                TabItem(
+                    title: Row(children: [
+                      Icon(Icons.settings_outlined),
+                      SizedBox(width: 8),
+                      Text('Settings')
+                    ]),
+                    color: Colors.blue.shade600),
+                TabItem(
+                    title: Row(children: [
+                      Icon(Icons.devices_other_outlined),
+                      SizedBox(width: 8),
+                      Text('Others')
+                    ]),
+                    color: Colors.purple.shade600),
+              ],
+              controller: _tabController,
+            ),
+            ColorfulTabBar(
+              indicatorHeight: 6,
+              verticalTabPadding: 0.0,
+              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              selectedHeight: 48,
+              unselectedHeight: 40,
+              tabs: [
+                TabItem(color: Colors.red.shade600, title: Text('Home')),
+                TabItem(color: Colors.green.shade600, title: Text('Favorite')),
+                TabItem(color: Colors.orange.shade600, title: Text('Search')),
+                TabItem(color: Colors.blue.shade600, title: Text('Settings')),
+                TabItem(color: Colors.purple.shade600, title: Text('Others')),
+              ],
+              controller: _tabController,
+            ),
             Expanded(
               child: TabBarView(
                   controller: _tabController,
