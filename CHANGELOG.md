@@ -1,3 +1,6 @@
+## 0.0.4
+* Updated Documentation
+
 ## 0.0.3
 * Documentation
 * Added more examples

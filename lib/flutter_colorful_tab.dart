@@ -27,20 +27,16 @@ class TabItem {
 /// conjunction with a [TabBarView].
 ///
 /// ![Demo](https://raw.githubusercontent.com/datdescartes/flutter_colorful_tab/master/demo.gif)
+///
+/// selectedHeight, unselectedHeight are The height of selected/unselected tabs.
+/// Must be non-null and greated than 0.0
+/// Default values are 40.0 and 32.0
 class ColorfulTabBar extends StatefulWidget {
   ColorfulTabBar({
     Key key,
     this.tabs,
     this.controller,
-
-    /// The height of selected tab.
-    /// Must be non-null and greater than 0.0
-    /// its default value is 40.0
     double selectedHeight = 40.0,
-
-    /// The height of unselected tab.
-    /// Must be non-null and greater than 0.0
-    /// its default value is 32.0
     double unselectedHeight = 32.0,
     this.indicatorHeight = 4.0,
     this.topPadding = 8.0,
