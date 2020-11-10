@@ -7,22 +7,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+/// Tab info that hold the title widget and tab color.
 class TabItem {
-  TabItem({this.color, this.title});
+  TabItem({this.color, this.title})
+      : assert(color != null),
+        assert(title != null);
+
+  /// tab color, must be non-null
   final Color color;
+
+  /// tab Widget, typical Text(), must be non-null
   final Widget title;
 }
 
+/// A colorful tabbar that displays a horizontal row of tabs where each tab
+/// has a color.
+///
+/// Typically created as the [AppBar.bottom] part of an [AppBar] and in
+/// conjunction with a [TabBarView].
+///
+/// ![Demo](https://raw.githubusercontent.com/datdescartes/flutter_colorful_tab/master/demo.gif)
 class ColorfulTabBar extends StatefulWidget {
   ColorfulTabBar({
     Key key,
     this.tabs,
     this.controller,
 
-    /// Tab height when selected
+    /// The height of selected tab.
+    /// Must be non-null and greater than 0.0
+    /// its default value is 40.0
     double selectedHeight = 40.0,
 
-    /// Tab height when unselected
+    /// The height of unselected tab.
+    /// Must be non-null and greater than 0.0
+    /// its default value is 32.0
     double unselectedHeight = 32.0,
     this.indicatorHeight = 4.0,
     this.topPadding = 8.0,
@@ -36,9 +54,10 @@ class ColorfulTabBar extends StatefulWidget {
     this.unselectedLabelColor,
     this.labelStyle,
     this.unselectedLabelStyle,
-  })  : assert(selectedHeight > 0.0),
-        assert(unselectedHeight > 0.0),
-        assert(indicatorHeight >= 0.0),
+  })  : assert(selectedHeight != null && selectedHeight > 0.0),
+        assert(unselectedHeight != null && unselectedHeight > 0.0),
+        assert(indicatorHeight == null || indicatorHeight >= 0.0),
+        assert(verticalTabPadding != null),
         _tabHeight = max(selectedHeight, unselectedHeight),
         _selectedTabPadding =
             max(selectedHeight, unselectedHeight) - selectedHeight,
@@ -46,19 +65,65 @@ class ColorfulTabBar extends StatefulWidget {
             max(selectedHeight, unselectedHeight) - unselectedHeight,
         super(key: key);
 
+  /// This widget's selection and animation state.
+  ///
+  /// If [TabController] is not provided, then the value of [DefaultTabController.of]
+  /// will be used.
   final TabController controller;
+
+  /// A list of tab's infos including color and title widget.
+  ///
+  /// The length of this list must match the [controller]'s [TabController.length]
+  /// and the length of the [TabBarView.children] list.
   final List<TabItem> tabs;
+
+  /// The thickness of the line that appears below the tab bar.
+  ///
+  /// The value of this parameter must be null or greater than zero and
+  /// its default value is 4.0.
+  ///
+  /// If the value is null then the indicator will be removed
   final double indicatorHeight;
 
   // Padding on the top of TabBar
   final double topPadding;
 
-  /// Padding between tabs
+  /// The padding added to each of the tab labels, must be non-null
+  /// Default to 2.0
   final double verticalTabPadding;
+
+  /// Shape of a tab, default to round top-left and top-right corners
   final ShapeBorder tabShape;
+
+  /// The color of selected tab labels.
+  ///
+  /// Unselected tab labels are rendered with the same color rendered at 70%
+  /// opacity unless [unselectedLabelColor] is non-null.
+  ///
+  /// If this parameter is null, then the color of the [ThemeData.primaryTextTheme]'s
+  /// bodyText1 text color is used.
   final Color labelColor;
+
+  /// The color of unselected tab labels.
+  ///
+  /// If this property is null, unselected tab labels are rendered with the
+  /// [labelColor] with 70% opacity.
   final Color unselectedLabelColor;
+
+  /// The text style of the selected tab labels.
+  ///
+  /// If [unselectedLabelStyle] is null, then this text style will be used for
+  /// both selected and unselected label styles.
+  ///
+  /// If this property is null, then the text style of the
+  /// [ThemeData.primaryTextTheme]'s bodyText1 definition is used.
   final TextStyle labelStyle;
+
+  /// The text style of the unselected tab labels.
+  ///
+  /// If this property is null, then the [labelStyle] value is used. If [labelStyle]
+  /// is null, then the text style of the [ThemeData.primaryTextTheme]'s
+  /// bodyText1 definition is used.
   final TextStyle unselectedLabelStyle;
 
   final double _tabHeight;
