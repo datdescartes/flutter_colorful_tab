@@ -18,39 +18,52 @@ class ColorfulTabBar extends StatefulWidget {
     Key key,
     this.tabs,
     this.controller,
-    double selectedHeight = 40,
-    double unselectedHeight = 32,
-    this.indicatorHeight = 4,
-    this.topPadding = 8,
-    this.verticalTabPadding = 2,
+
+    /// Tab height when selected
+    double selectedHeight = 40.0,
+
+    /// Tab height when unselected
+    double unselectedHeight = 32.0,
+    this.indicatorHeight = 4.0,
+    this.topPadding = 8.0,
+    this.verticalTabPadding = 2.0,
     this.tabShape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(4),
-      topRight: Radius.circular(4),
+      topLeft: Radius.circular(4.0),
+      topRight: Radius.circular(4.0),
     )),
-    this.selectedColor = Colors.white,
-    this.unselectedColor = Colors.white60,
-  })  : assert(selectedHeight > 0),
-        assert(unselectedHeight > 0),
-        assert(indicatorHeight >= 0),
-        tabHeight = max(selectedHeight, unselectedHeight),
-        selectedTabPadding =
+    this.labelColor,
+    this.unselectedLabelColor,
+    this.labelStyle,
+    this.unselectedLabelStyle,
+  })  : assert(selectedHeight > 0.0),
+        assert(unselectedHeight > 0.0),
+        assert(indicatorHeight >= 0.0),
+        _tabHeight = max(selectedHeight, unselectedHeight),
+        _selectedTabPadding =
             max(selectedHeight, unselectedHeight) - selectedHeight,
-        unselectedTabPadding =
+        _unselectedTabPadding =
             max(selectedHeight, unselectedHeight) - unselectedHeight,
         super(key: key);
 
   final TabController controller;
   final List<TabItem> tabs;
-  final double tabHeight;
-  final double unselectedTabPadding;
-  final double selectedTabPadding;
   final double indicatorHeight;
+
+  // Padding on the top of TabBar
   final double topPadding;
+
+  /// Padding between tabs
   final double verticalTabPadding;
   final ShapeBorder tabShape;
-  final Color selectedColor;
-  final Color unselectedColor;
+  final Color labelColor;
+  final Color unselectedLabelColor;
+  final TextStyle labelStyle;
+  final TextStyle unselectedLabelStyle;
+
+  final double _tabHeight;
+  final double _unselectedTabPadding;
+  final double _selectedTabPadding;
 
   @override
   _ColorfulTabBarState createState() => _ColorfulTabBarState();
@@ -231,7 +244,7 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
     }());
     if (_controller.length == 0) {
       return Container(
-        height: widget.tabHeight + widget.indicatorHeight,
+        height: widget._tabHeight + widget.indicatorHeight,
       );
     }
 
@@ -303,9 +316,9 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
 
     return Column(
       children: [
-        SizedBox(height: widget.topPadding),
+        if (widget.topPadding != null) SizedBox(height: widget.topPadding),
         SizedBox(
-          height: widget.tabHeight,
+          height: widget._tabHeight,
           child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               controller: _scrollController,
@@ -314,12 +327,13 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
                 children: tabs,
               )),
         ),
-        _IndicatorWidget(
-          animation: _controller?.animation ?? kAlwaysDismissedAnimation,
-          tabs: widget.tabs,
-          currentIndex: _currentIndex,
-          height: widget.indicatorHeight,
-        )
+        if (widget.indicatorHeight != null && widget.indicatorHeight > 0.0)
+          _IndicatorWidget(
+            animation: _controller?.animation ?? kAlwaysDismissedAnimation,
+            tabs: widget.tabs,
+            currentIndex: _currentIndex,
+            height: widget.indicatorHeight,
+          )
       ],
     );
   }
@@ -435,20 +449,44 @@ class _TabItemWidget extends AnimatedWidget {
 
   @override
   Widget build(BuildContext context) {
-    final animation = listenable as Animation<double>;
-    final padding = selected
-        ? lerpDouble(tabBar.selectedTabPadding, tabBar.unselectedTabPadding,
-                animation.value)
-            .clamp(0.0, tabBar.tabHeight)
-        : lerpDouble(tabBar.unselectedTabPadding, tabBar.selectedTabPadding,
-                animation.value)
-            .clamp(0.0, tabBar.tabHeight);
+    final ThemeData themeData = Theme.of(context);
+    final TabBarTheme tabBarTheme = TabBarTheme.of(context);
+    final Animation<double> animation = listenable as Animation<double>;
 
-    final color = selected
-        ? Color.lerp(
-            tabBar.selectedColor, tabBar.unselectedColor, animation.value)
-        : Color.lerp(
-            tabBar.unselectedColor, tabBar.selectedColor, animation.value);
+    // To enable TextStyle.lerp(style1, style2, value), both styles must have
+    // the same value of inherit. Force that to be inherit=true here.
+    final TextStyle defaultStyle = (tabBar.labelStyle ??
+            tabBarTheme.labelStyle ??
+            themeData.primaryTextTheme.bodyText1)
+        .copyWith(inherit: true);
+    final TextStyle defaultUnselectedStyle = (tabBar.unselectedLabelStyle ??
+            tabBarTheme.unselectedLabelStyle ??
+            tabBar.labelStyle ??
+            themeData.primaryTextTheme.bodyText1)
+        .copyWith(inherit: true);
+    final TextStyle textStyle = selected
+        ? TextStyle.lerp(defaultStyle, defaultUnselectedStyle, animation.value)
+        : TextStyle.lerp(defaultUnselectedStyle, defaultStyle, animation.value);
+
+    final Color selectedColor = tabBar.labelColor ??
+        tabBarTheme.labelColor ??
+        themeData.primaryTextTheme.bodyText1.color;
+    final Color unselectedColor = tabBar.unselectedLabelColor ??
+        tabBarTheme.unselectedLabelColor ??
+        selectedColor.withAlpha(0xB2); // 70% alpha
+
+    final Color color = selected
+        ? Color.lerp(selectedColor, unselectedColor, animation.value)
+        : Color.lerp(unselectedColor, selectedColor, animation.value);
+
+    final padding = selected
+        ? lerpDouble(tabBar._selectedTabPadding, tabBar._unselectedTabPadding,
+                animation.value)
+            .clamp(0.0, tabBar._tabHeight)
+        : lerpDouble(tabBar._unselectedTabPadding, tabBar._selectedTabPadding,
+                animation.value)
+            .clamp(0.0, tabBar._tabHeight);
+
     return Padding(
       padding: selected
           ? EdgeInsets.fromLTRB(
@@ -460,11 +498,12 @@ class _TabItemWidget extends AnimatedWidget {
           shape: tabBar.tabShape,
           color: tab.color,
           onPressed: onPressed,
-          child: IconTheme(
-            data: IconThemeData(color: color, size: 20),
-            child: DefaultTextStyle(
-                style: TextStyle(color: color, fontWeight: FontWeight.bold),
-                child: tab.title),
+          child: DefaultTextStyle(
+            style: textStyle.copyWith(color: color),
+            child: IconTheme.merge(
+              data: IconThemeData(color: color, size: 20),
+              child: tab.title,
+            ),
           )),
     );
   }
