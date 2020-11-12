@@ -376,7 +376,8 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (widget.topPadding != null) SizedBox(height: widget.topPadding),
         SizedBox(
