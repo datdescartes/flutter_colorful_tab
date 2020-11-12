@@ -114,6 +114,58 @@ class _MyHomePageState extends State<MyHomePage>
               ],
               controller: _tabController,
             ),
+            ColorfulTabBar(
+              selectedHeight: 64,
+              unselectedHeight: 48,
+              tabs: [
+                TabItem(
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.home_outlined),
+                          SizedBox(width: 8),
+                          Text('Home')
+                        ]),
+                    color: Colors.red.shade600),
+                TabItem(
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.favorite_outline),
+                          SizedBox(width: 8),
+                          Text('Favorite')
+                        ]),
+                    color: Colors.red.shade600),
+                TabItem(
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.search_outlined),
+                          SizedBox(width: 8),
+                          Text('Search')
+                        ]),
+                    color: Colors.lime.shade600),
+                TabItem(
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.settings_outlined),
+                          SizedBox(width: 8),
+                          Text('Settings')
+                        ]),
+                    color: Colors.blue.shade600),
+                TabItem(
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.devices_other_outlined),
+                          SizedBox(width: 8),
+                          Text('Others')
+                        ]),
+                    color: Colors.purple.shade600),
+              ],
+              controller: _tabController,
+            ),
             Expanded(
               child: TabBarView(
                   controller: _tabController,

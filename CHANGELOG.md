@@ -1,3 +1,6 @@
+## 0.0.5
+* Bugfixes: Container antialias workaround
+
 ## 0.0.4
 * Updated Documentation
 

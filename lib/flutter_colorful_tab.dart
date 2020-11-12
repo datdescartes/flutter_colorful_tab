@@ -28,7 +28,7 @@ class TabItem {
 ///
 /// ![Demo](https://raw.githubusercontent.com/datdescartes/flutter_colorful_tab/master/demo.gif)
 ///
-/// selectedHeight, unselectedHeight are The height of selected/unselected tabs.
+/// [selectedHeight], [unselectedHeight] are The height of selected/unselected tabs.
 /// Must be non-null and greated than 0.0
 /// Default values are 40.0 and 32.0
 class ColorfulTabBar extends StatefulWidget {
@@ -376,6 +376,7 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (widget.topPadding != null) SizedBox(height: widget.topPadding),
         SizedBox(
@@ -554,18 +555,25 @@ class _TabItemWidget extends AnimatedWidget {
               tabBar.verticalTabPadding, padding, tabBar.verticalTabPadding, 0)
           : EdgeInsets.fromLTRB(
               tabBar.verticalTabPadding, padding, tabBar.verticalTabPadding, 0),
-      child: FlatButton(
-          height: double.infinity,
-          shape: tabBar.tabShape,
-          color: tab.color,
-          onPressed: onPressed,
-          child: DefaultTextStyle(
-            style: textStyle.copyWith(color: color),
-            child: IconTheme.merge(
-              data: IconThemeData(color: color, size: 20),
-              child: tab.title,
+      child: Material(
+        shape: tabBar.tabShape,
+        color: tab.color,
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            height: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.center,
+            child: DefaultTextStyle(
+              style: textStyle.copyWith(color: color),
+              child: IconTheme.merge(
+                data: IconThemeData(color: color, size: 20),
+                child: tab.title,
+              ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -603,10 +611,12 @@ class _IndicatorWidget extends AnimatedWidget {
             tabs[currentIndex].color, tabs[currentIndex + 1].color, value);
       }
     }
-    return Container(
-      color: color,
-      width: double.infinity,
-      height: height,
+
+    // Doesn't use Container.
+    // Workaround for https://github.com/flutter/flutter/issues/14288
+    return CustomPaint(
+      size: Size(double.infinity, height),
+      painter: DrawRectangle(color),
     );
   }
 }
@@ -679,4 +689,24 @@ class _ChangeAnimation extends Animation<double>
     return (controllerValue - currentIndex).abs() /
         (currentIndex - previousIndex).abs();
   }
+}
+
+class DrawRectangle extends CustomPainter {
+  Paint _paint;
+
+  Color _color;
+
+  DrawRectangle(this._color) {
+    _paint = Paint()
+      ..color = _color
+      ..style = PaintingStyle.fill;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(Rect.fromLTWH(0, -1, size.width, size.height + 1), _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
