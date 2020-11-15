@@ -1,12 +1,8 @@
+## 0.0.7
+* Added aligment parameter
+
 ## 0.0.6
 * Bugfixes: Container antialias workaround
-
-## 0.0.4
-* Updated Documentation
-
-## 0.0.3
-* Documentation
-* Added more examples
 
 ## 0.0.2
 * Added label style parameter

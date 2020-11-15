@@ -106,11 +106,11 @@ class _MyHomePageState extends State<MyHomePage>
               selectedHeight: 48,
               unselectedHeight: 40,
               tabs: [
-                TabItem(color: Colors.red.shade600, title: Text('Home')),
-                TabItem(color: Colors.green.shade600, title: Text('Favorite')),
-                TabItem(color: Colors.orange.shade600, title: Text('Search')),
-                TabItem(color: Colors.blue.shade600, title: Text('Settings')),
-                TabItem(color: Colors.purple.shade600, title: Text('Others')),
+                TabItem(color: Colors.red, title: Text('Tab 1 - Home')),
+                TabItem(color: Colors.green, title: Text('Tab 2 - Favorite')),
+                TabItem(color: Colors.orange, title: Text('Tab 3 - Search')),
+                TabItem(color: Colors.blue, title: Text('Tab 4 - Settings')),
+                TabItem(color: Colors.purple, title: Text('Tab 5 - Others')),
               ],
               controller: _tabController,
             ),
@@ -162,6 +162,48 @@ class _MyHomePageState extends State<MyHomePage>
                           SizedBox(width: 8),
                           Text('Others')
                         ]),
+                    color: Colors.purple.shade600),
+              ],
+              controller: _tabController,
+            ),
+            ColorfulTabBar(
+              alignment: TabAxisAlignment.start,
+              tabs: [
+                TabItem(
+                    title: Icon(Icons.home_outlined),
+                    color: Colors.red.shade600),
+                TabItem(
+                    title: Icon(Icons.favorite_outline),
+                    color: Colors.orange.shade600),
+                TabItem(
+                    title: Icon(Icons.search_outlined),
+                    color: Colors.lime.shade600),
+                TabItem(
+                    title: Icon(Icons.settings_outlined),
+                    color: Colors.blue.shade600),
+                TabItem(
+                    title: Icon(Icons.devices_other_outlined),
+                    color: Colors.purple.shade600),
+              ],
+              controller: _tabController,
+            ),
+            ColorfulTabBar(
+              alignment: TabAxisAlignment.end,
+              tabs: [
+                TabItem(
+                    title: Icon(Icons.home_outlined),
+                    color: Colors.red.shade600),
+                TabItem(
+                    title: Icon(Icons.favorite_outline),
+                    color: Colors.orange.shade600),
+                TabItem(
+                    title: Icon(Icons.search_outlined),
+                    color: Colors.lime.shade600),
+                TabItem(
+                    title: Icon(Icons.settings_outlined),
+                    color: Colors.blue.shade600),
+                TabItem(
+                    title: Icon(Icons.devices_other_outlined),
                     color: Colors.purple.shade600),
               ],
               controller: _tabController,

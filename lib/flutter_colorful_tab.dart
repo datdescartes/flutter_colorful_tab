@@ -20,6 +20,34 @@ class TabItem {
   final Widget title;
 }
 
+/// How the tabs should be placed along the main axis in a tabbar.
+enum TabAxisAlignment {
+  /// Place the children as close to the start of the main axis as possible.
+  start,
+
+  /// Place the children as close to the end of the main axis as possible.
+  end,
+
+  /// Place the children as close to the middle of the main axis as possible.
+  center,
+}
+
+extension on TabAxisAlignment {
+  CrossAxisAlignment toCrossAxisAlignment() {
+    switch (this) {
+      case TabAxisAlignment.start:
+        return CrossAxisAlignment.start;
+      case TabAxisAlignment.end:
+        return CrossAxisAlignment.end;
+        break;
+      case TabAxisAlignment.center:
+        return CrossAxisAlignment.center;
+        break;
+    }
+    return CrossAxisAlignment.center;
+  }
+}
+
 /// A colorful tabbar that displays a horizontal row of tabs where each tab
 /// has a color.
 ///
@@ -31,6 +59,9 @@ class TabItem {
 /// [selectedHeight], [unselectedHeight] are The height of selected/unselected tabs.
 /// Must be non-null and greated than 0.0
 /// Default values are 40.0 and 32.0
+///
+/// [alignment] How the tabs should be placed along the main axis in the tabbar.
+/// if null then [TabAxisAlignment.center] will be used
 class ColorfulTabBar extends StatefulWidget {
   ColorfulTabBar({
     Key key,
@@ -50,6 +81,7 @@ class ColorfulTabBar extends StatefulWidget {
     this.unselectedLabelColor,
     this.labelStyle,
     this.unselectedLabelStyle,
+    TabAxisAlignment alignment = TabAxisAlignment.center,
   })  : assert(selectedHeight != null && selectedHeight > 0.0),
         assert(unselectedHeight != null && unselectedHeight > 0.0),
         assert(indicatorHeight == null || indicatorHeight >= 0.0),
@@ -59,6 +91,8 @@ class ColorfulTabBar extends StatefulWidget {
             max(selectedHeight, unselectedHeight) - selectedHeight,
         _unselectedTabPadding =
             max(selectedHeight, unselectedHeight) - unselectedHeight,
+        _alignment =
+            (alignment ?? TabAxisAlignment.center).toCrossAxisAlignment(),
         super(key: key);
 
   /// This widget's selection and animation state.
@@ -122,6 +156,7 @@ class ColorfulTabBar extends StatefulWidget {
   /// bodyText1 definition is used.
   final TextStyle unselectedLabelStyle;
 
+  final CrossAxisAlignment _alignment;
   final double _tabHeight;
   final double _unselectedTabPadding;
   final double _selectedTabPadding;
@@ -376,7 +411,7 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: widget._alignment,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (widget.topPadding != null) SizedBox(height: widget.topPadding),
