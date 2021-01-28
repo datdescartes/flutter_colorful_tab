@@ -9,13 +9,17 @@ import 'package:flutter/rendering.dart';
 
 /// Tab info that hold the title widget and tab color.
 class TabItem {
-  TabItem({required this.color, required this.title});
+  TabItem({required this.color, required this.title, Color? unselectedColor})
+      : this.unSelectedColor = unselectedColor ?? color;
 
   /// tab color, must be non-null
   final Color color;
 
   /// tab Widget, typical Text(), must be non-null
   final Widget title;
+
+  /// tab color when unselected
+  final Color unSelectedColor;
 }
 
 /// How the tabs should be placed along the main axis in a tabbar.
@@ -397,7 +401,7 @@ class _ColorfulTabBarState extends State<ColorfulTabBar> {
       if (tabs[index] != placeHolderWidget) {
         continue;
       }
-      final isSelected = widget.controller!.index == index;
+      final isSelected = _controller!.index == index;
       tabs[index] = _TabItemWidget(widget,
           onPressed: () => _handleTap(index),
           animation: kAlwaysDismissedAnimation,
@@ -571,6 +575,10 @@ class _TabItemWidget extends AnimatedWidget {
         ? Color.lerp(selectedColor, unselectedColor, animation.value)!
         : Color.lerp(unselectedColor, selectedColor, animation.value)!;
 
+    final Color tabColor = selected
+        ? Color.lerp(tab.color, tab.unSelectedColor, animation.value)!
+        : Color.lerp(tab.unSelectedColor, tab.color, animation.value)!;
+
     final padding = selected
         ? lerpDouble(tabBar._selectedTabPadding, tabBar._unselectedTabPadding,
                 animation.value)!
@@ -587,7 +595,7 @@ class _TabItemWidget extends AnimatedWidget {
               tabBar.verticalTabPadding, padding, tabBar.verticalTabPadding, 0),
       child: Material(
         shape: tabBar.tabShape,
-        color: tab.color,
+        color: tabColor,
         child: InkWell(
           onTap: onPressed,
           child: Container(
