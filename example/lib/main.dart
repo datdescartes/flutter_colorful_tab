@@ -189,22 +189,29 @@ class _MyHomePageState extends State<MyHomePage>
             ),
             ColorfulTabBar(
               alignment: TabAxisAlignment.end,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white30,
               tabs: [
                 TabItem(
                     title: Icon(Icons.home_outlined),
-                    color: Colors.red.shade600),
+                    color: Colors.blue.shade600,
+                    unselectedColor: Colors.blue.shade400),
                 TabItem(
                     title: Icon(Icons.favorite_outline),
-                    color: Colors.orange.shade600),
+                    color: Colors.blue.shade600,
+                    unselectedColor: Colors.blue.shade300),
                 TabItem(
                     title: Icon(Icons.search_outlined),
-                    color: Colors.lime.shade600),
+                    color: Colors.blue.shade600,
+                    unselectedColor: Colors.blue.shade300),
                 TabItem(
                     title: Icon(Icons.settings_outlined),
-                    color: Colors.blue.shade600),
+                    color: Colors.blue.shade600,
+                    unselectedColor: Colors.blue.shade300),
                 TabItem(
                     title: Icon(Icons.devices_other_outlined),
-                    color: Colors.purple.shade600),
+                    color: Colors.blue.shade600,
+                    unselectedColor: Colors.blue.shade300),
               ],
               controller: _tabController,
             ),
