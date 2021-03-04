@@ -9,7 +9,7 @@ A colorful TabBar for Flutter where each tab has a color (inspired by SmartNews 
 Add this to your package's pubspec.yaml file:
 ````
   dependencies:
-    flutter_colorful_tab: "^0.0.8"
+    flutter_colorful_tab: "^0.0.7"
 ````
 
 Import the library in your file:

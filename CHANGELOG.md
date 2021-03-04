@@ -1,5 +1,3 @@
-## 0.0.8
-* Added unSelectedColor to tabItem
 ## 0.0.7
 * Added aligment parameter
 
