@@ -2,13 +2,21 @@ library flutter_colorful_tab;
 
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 /// Tab info that hold the title widget and tab color.
 class TabItem {
-  TabItem({required this.color, required this.title, Color? unselectedColor})
-      : this.unSelectedColor = unselectedColor ?? color;
+  TabItem({
+    required this.color,
+    required this.title,
+    Color? unselectedColor,
+    this.labelColor,
+    this.unselectedLabelColor,
+    this.labelStyle,
+    this.unselectedLabelStyle,
+  }) : this.unSelectedColor = unselectedColor ?? color;
 
   /// tab color, must be non-null
   final Color color;
@@ -18,6 +26,26 @@ class TabItem {
 
   /// tab color when unselected
   final Color unSelectedColor;
+
+  /// The color of the selected tab label.
+  ///
+  /// If null, defaults to the value of [ColorfulTabBar.labelColor].
+  final Color? labelColor;
+
+  /// The color of unselected tab label.
+  ///
+  /// If null, defaults to the value of [ColorfulTabBar.unselectedLabelColor].
+  final Color? unselectedLabelColor;
+
+  /// The text style of the selected tab labels.
+  ///
+  /// If null, defaults to the value of [ColorfulTabBar.labelStyle].
+  final TextStyle? labelStyle;
+
+  /// The text style of the unselected tab labels.
+  ///
+  /// If null, defaults to the value of [ColorfulTabBar.unselectedLabelStyle].
+  final TextStyle? unselectedLabelStyle;
 }
 
 /// How the tabs should be placed along the main axis in a tabbar.
@@ -548,24 +576,28 @@ class _TabItemWidget extends AnimatedWidget {
 
     // To enable TextStyle.lerp(style1, style2, value), both styles must have
     // the same value of inherit. Force that to be inherit=true here.
-    final TextStyle defaultStyle = (tabBar.labelStyle ??
+    final TextStyle defaultStyle = (tab.labelStyle ??
+            tabBar.labelStyle ??
             tabBarTheme.labelStyle ??
-            themeData.primaryTextTheme.bodyText1!)
+            themeData.primaryTextTheme.bodyLarge!)
         .copyWith(inherit: true);
-    final TextStyle defaultUnselectedStyle = (tabBar.unselectedLabelStyle ??
+    final TextStyle defaultUnselectedStyle = (tab.unselectedLabelStyle ??
+            tabBar.unselectedLabelStyle ??
             tabBarTheme.unselectedLabelStyle ??
             tabBar.labelStyle ??
-            themeData.primaryTextTheme.bodyText1!)
+            themeData.primaryTextTheme.bodyLarge!)
         .copyWith(inherit: true);
     final TextStyle textStyle = selected
         ? TextStyle.lerp(defaultStyle, defaultUnselectedStyle, animation.value)!
         : TextStyle.lerp(
             defaultUnselectedStyle, defaultStyle, animation.value)!;
 
-    final Color selectedColor = tabBar.labelColor ??
+    final Color selectedColor = tab.labelColor ??
+        tabBar.labelColor ??
         tabBarTheme.labelColor ??
-        themeData.primaryTextTheme.bodyText1!.color!;
-    final Color unselectedColor = tabBar.unselectedLabelColor ??
+        themeData.primaryTextTheme.bodyLarge!.color!;
+    final Color unselectedColor = tab.unselectedLabelColor ??
+        tabBar.unselectedLabelColor ??
         tabBarTheme.unselectedLabelColor ??
         selectedColor.withAlpha(0xB2); // 70% alpha
 

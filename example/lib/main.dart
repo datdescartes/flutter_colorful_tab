@@ -115,11 +115,24 @@ class _MyHomePageState extends State<MyHomePage>
               selectedHeight: 48,
               unselectedHeight: 40,
               tabs: [
-                TabItem(color: Colors.red, title: const Text('Tab 1 - Home')),
+                TabItem(
+                  color: Colors.red,
+                  title: const Text('Tab 1 - Home'),
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.yellow.shade600,
+                ),
                 TabItem(
                     color: Colors.green, title: const Text('Tab 2 - Favorite')),
                 TabItem(
-                    color: Colors.orange, title: const Text('Tab 3 - Search')),
+                  color: Colors.orange,
+                  title: const Text('Tab 3 - Search'),
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.yellow.shade600,
+                  labelStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                  unselectedLabelStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.normal),
+                ),
                 TabItem(
                     color: Colors.blue, title: const Text('Tab 4 - Settings')),
                 TabItem(

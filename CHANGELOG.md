@@ -1,3 +1,7 @@
+## 0.1.1
+* Added label color, style for each Tab
+* Updated example project
+
 ## 0.1.0
 * Migrated to null safety.
 
